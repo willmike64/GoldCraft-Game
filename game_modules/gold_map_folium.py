@@ -1245,8 +1245,8 @@ def render_travel_phase(expedition):
         .travel-tooltip .tooltiptext {
             visibility: hidden;
             width: 300px;
-            background-color: #1a1a1a;
-            color: #00ff00;
+            background-color: #ffffff;
+            color: #1a1a1a;
             text-align: left;
             border-radius: 8px;
             padding: 12px;
@@ -1261,7 +1261,7 @@ def render_travel_phase(expedition):
             font-family: 'Courier New', monospace;
             font-size: 12px;
             white-space: pre-line;
-            box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .travel-tooltip:hover .tooltiptext {
             visibility: visible;
@@ -1273,8 +1273,8 @@ def render_travel_phase(expedition):
         # Display choices with tooltips
         for i, (choice_text, tooltip) in enumerate(choice_options):
             st.markdown(f"""
-            <div class="travel-tooltip" style="margin: 10px 0; padding: 8px; background: rgba(218,165,32,0.1); border-radius: 6px;">
-                <span style="cursor: help; color: #DAA520; font-weight: bold; font-size: 16px;">
+            <div class="travel-tooltip" style="margin: 10px 0; padding: 8px; background: #ffffff; border-radius: 6px; border: 2px solid #DAA520; box-shadow: 0 2px 8px rgba(218, 165, 32, 0.2);">
+                <span style="cursor: help; color: #1a1a1a; font-weight: bold; font-size: 16px;">
                     {choice_text} 💡
                 </span>
                 <span class="tooltiptext">{tooltip}</span>
@@ -1948,8 +1948,8 @@ def render_events_phase(expedition):
         .tooltip .tooltiptext {
             visibility: hidden;
             width: 350px;
-            background-color: #1a1a1a;
-            color: #00ff00;
+            background-color: #ffffff;
+            color: #1a1a1a;
             text-align: left;
             border-radius: 10px;
             padding: 15px;
@@ -1964,7 +1964,7 @@ def render_events_phase(expedition):
             font-family: 'Courier New', monospace;
             font-size: 13px;
             white-space: pre-line;
-            box-shadow: 0 0 15px rgba(218, 165, 32, 0.7);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             line-height: 1.4;
         }
         .tooltip:hover .tooltiptext {
