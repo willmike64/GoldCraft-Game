@@ -4,3 +4,4 @@ folium>=0.14.0
 streamlit-folium>=0.15.0
 branca>=0.6.0
 requests>=2.25.0
+firebase-admin>=6.0.0
