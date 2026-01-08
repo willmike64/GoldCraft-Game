@@ -8,6 +8,7 @@ import secrets
 import datetime
 from game_modules.firebase_service import get_firebase_service
 from game_modules.analytics_service import analytics
+from game_modules.ui_styles import apply_global_styles
 
 # --------------------------------------------------
 # Firebase Service
@@ -114,134 +115,59 @@ def check_authentication():
 
 def render_login_page():
     """Render enhanced login page with password authentication."""
-    # Enhanced styling
+    # Apply unified styles
+    apply_global_styles()
+    
+    # Enhanced styling for login page
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap');
-    
-    .stApp {
-        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 50%, #f0f0f0 100%);
-        color: #333333 !important;
-    }
-    
     .login-container {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 248, 248, 0.95));
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 246, 240, 0.98));
         border: 3px solid #DAA520;
         border-radius: 20px;
         padding: 3rem;
         margin: 2rem auto;
         max-width: 600px;
-        box-shadow: 
-            0 0 30px rgba(218, 165, 32, 0.4),
-            inset 0 0 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(15px);
+        box-shadow: 0 0 30px rgba(218, 165, 32, 0.4);
+        color: #2c2c2c !important;
     }
     
     .login-header {
         color: #DAA520;
-        font-size: 5rem;
+        font-size: 4rem;
         font-weight: 900;
         text-align: center;
-        text-shadow: 
-            3px 3px 6px rgba(0,0,0,0.8),
-            0 0 20px rgba(218, 165, 32, 0.6);
-        font-family: 'Nosifer', cursive;
-        letter-spacing: 5px;
-        margin-bottom: 0;
-        animation: goldGlow 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes goldGlow {
-        from { 
-            filter: drop-shadow(0 0 10px #DAA520);
-            transform: scale(1);
-        }
-        to { 
-            filter: drop-shadow(0 0 30px #FFD700);
-            transform: scale(1.02);
-        }
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 1rem;
     }
     
     .subtitle {
         color: #8B4513;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         text-align: center;
-        font-family: 'Creepster', cursive;
-        margin-bottom: 3rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        animation: flicker 4s ease-in-out infinite;
-    }
-    
-    @keyframes flicker {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.8; }
-    }
-    
-    .mining-animation {
-        text-align: center;
-        font-size: 3rem;
-        margin: 2rem 0;
-        animation: mining 2s ease-in-out infinite;
-    }
-    
-    @keyframes mining {
-        0%, 100% { transform: rotate(-15deg) scale(1); }
-        50% { transform: rotate(15deg) scale(1.1); }
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
     
     .prospector-quote {
-        background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(160, 82, 45, 0.1));
+        background: rgba(255, 255, 255, 0.9);
         border-left: 5px solid #DAA520;
         border-radius: 10px;
         padding: 1.5rem;
         margin: 2rem 0;
         font-style: italic;
-        color: #654321;
-        font-family: 'Georgia', serif;
-        font-size: 1.1rem;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        color: #2c2c2c !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
     .stats-ticker {
-        background: linear-gradient(90deg, rgba(240, 240, 240, 0.9), rgba(248, 248, 248, 0.9));
+        background: rgba(255, 255, 255, 0.95);
         border: 2px solid #DAA520;
         border-radius: 10px;
         padding: 1rem;
         margin: 1.5rem 0;
-        font-family: 'Courier New', monospace;
-        color: #006400;
+        color: #2c2c2c !important;
         font-size: 0.95rem;
-        animation: dataScroll 5s linear infinite;
-        overflow: hidden;
-    }
-    
-    @keyframes dataScroll {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 100% 50%; }
-    }
-    
-    .enter-button {
-        background: linear-gradient(45deg, #DAA520, #FFD700, #DAA520) !important;
-        color: #1a1a1a !important;
-        font-weight: bold !important;
-        font-size: 1.3rem !important;
-        padding: 1rem 2rem !important;
-        border: none !important;
-        border-radius: 30px !important;
-        box-shadow: 
-            0 6px 20px rgba(218, 165, 32, 0.5),
-            inset 0 2px 4px rgba(255, 255, 255, 0.3) !important;
-        transition: all 0.3s ease !important;
-        text-transform: uppercase !important;
-        letter-spacing: 2px !important;
-    }
-    
-    .enter-button:hover {
-        transform: translateY(-3px) scale(1.05) !important;
-        box-shadow: 
-            0 8px 25px rgba(218, 165, 32, 0.7),
-            inset 0 2px 4px rgba(255, 255, 255, 0.4) !important;
-        background: linear-gradient(45deg, #FFD700, #FFFF00, #FFD700) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -252,7 +178,6 @@ def render_login_page():
     # Epic header with mining animation
     st.markdown('<h1 class="login-header">⛏️ GOLDCRAFT ⛏️</h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">DIMENSIONAL EARTH MINING EXPEDITION</p>', unsafe_allow_html=True)
-    st.markdown('<div class="mining-animation">⚒️💎⚒️</div>', unsafe_allow_html=True)
     
     # Atmospheric quote
     st.markdown("""
@@ -412,65 +337,8 @@ st.set_page_config(
 # --------------------------------------------------
 # Global Styling
 # --------------------------------------------------
-st.markdown("""
-<style>
-.stApp {
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 50%, #f0f0f0 100%);
-    color: #333333 !important;
-}
-
-.main-container {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 1rem;
-    box-shadow: 0 0 20px rgba(218, 165, 32, 0.2);
-}
-
-.content-box {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 248, 248, 0.95));
-    border: 2px solid #DAA520;
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 1rem 0;
-    box-shadow: 0 0 15px rgba(218, 165, 32, 0.3);
-    color: #333333 !important;
-}
-
-.gold-text {
-    color: #DAA520 !important;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-}
-
-.readable-text {
-    color: #333333 !important;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #DAA520;
-}
-
-/* Fix Streamlit text elements */
-.stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    color: #333333 !important;
-}
-
-.stMarkdown strong {
-    color: #DAA520 !important;
-}
-
-/* Fix bullet points and lists */
-ul, ol, li {
-    color: #333333 !important;
-}
-
-/* Fix headers */
-h1, h2, h3, h4, h5, h6 {
-    color: #DAA520 !important;
-}
-</style>
-""", unsafe_allow_html=True)
+# Apply unified styles at app startup
+apply_global_styles()
 
 # --------------------------------------------------
 # Session State Initialization

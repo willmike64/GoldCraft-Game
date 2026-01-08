@@ -1,5 +1,6 @@
 import streamlit as st
 from game_modules.firebase_service import get_firebase_service
+from game_modules.ui_styles import apply_global_styles, create_town_card, create_readable_text
 
 # Get Firebase service for logging
 firebase_service = get_firebase_service()
@@ -110,41 +111,8 @@ FACTIONS = {
 
 
 def _inject_town_hub_styles():
-    """Inject lightweight CSS to match the Town Hub 'new' look."""
-    st.markdown(
-        """
-        <style>
-            .content-box{
-                background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 18px;
-                padding: 22px 22px 10px 22px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-                margin-bottom: 14px;
-            }
-            .town-subtitle{
-                margin-top:-8px;
-                opacity:0.85;
-                font-style: italic;
-            }
-            .town-card{
-                border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 16px;
-                padding: 14px 14px 10px 14px;
-                background: rgba(255,255,255,0.03);
-                margin-bottom: 10px;
-            }
-            .town-card h3{
-                margin: 0 0 6px 0;
-            }
-            .town-card p{
-                margin: 0 0 10px 0;
-                opacity: 0.9;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    """Apply unified styling for town hub."""
+    apply_global_styles()
 
 def render_town_hub():
     _inject_town_hub_styles()
@@ -170,17 +138,17 @@ def render_town_hub():
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown('<div class="town-card"><h3>🏪 General Store</h3><p>Gear up with tools, supplies, and essentials.</p></div>', unsafe_allow_html=True)
+        st.markdown(create_town_card("🏪 General Store", "Gear up with tools, supplies, and essentials."), unsafe_allow_html=True)
         if st.button("🛒 Enter Store", use_container_width=True):
             st.session_state["town_hub_nav"] = "📦 Supplies"
 
     with col2:
-        st.markdown('<div class="town-card"><h3>🍺 Saloon</h3><p>Rumors, deals, and the occasional tall tale.</p></div>', unsafe_allow_html=True)
+        st.markdown(create_town_card("🍺 Saloon", "Rumors, deals, and the occasional tall tale."), unsafe_allow_html=True)
         if st.button("🍻 Enter Saloon", use_container_width=True):
             st.session_state["town_hub_nav"] = "🤝 Factions"
 
     with col3:
-        st.markdown('<div class="town-card"><h3>🏦 Bank</h3><p>Secure reserves, track inventory value, plan ahead.</p></div>', unsafe_allow_html=True)
+        st.markdown(create_town_card("🏦 Bank", "Secure reserves, track inventory value, plan ahead."), unsafe_allow_html=True)
         if st.button("💰 Enter Bank", use_container_width=True):
             st.session_state["town_hub_nav"] = "🏦 Bank"
 

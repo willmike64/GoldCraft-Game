@@ -1,6 +1,10 @@
 import streamlit as st
+from game_modules.ui_styles import apply_global_styles, create_readable_text
 
 def render_game_menu():
+    # Apply unified styles
+    apply_global_styles()
+    
     st.markdown("## ⛏️ Welcome to Gold Creek, Prospector!")
     
     # Get player info
@@ -24,18 +28,20 @@ def render_game_menu():
     
     # Beginner guidance
     if turn == 1 and player_gold <= 75:  # New player
-        st.info("🌟 **New to Gold Creek?** Here's what seasoned prospectors recommend:")
+        st.markdown(create_readable_text("""
+        <strong>🌟 New to Gold Creek?</strong> Here's what seasoned prospectors recommend:
+        <br><br>
+        <strong>📚 Getting Started Guide:</strong><br>
+        1. <strong>🏘️ Visit the Town Hub first</strong> - Meet the locals, buy better equipment, and learn the ropes<br>
+        2. <strong>💪 Build your strength</strong> - Try axe throwing and other activities to improve your skills<br>
+        3. <strong>🤝 Make friends with factions</strong> - They'll offer better deals and exclusive equipment<br>
+        4. <strong>🗺️ Study the Strata Map</strong> - Plan your expeditions carefully - some sites are deadly!<br>
+        5. <strong>💰 Start small</strong> - Begin with safer, closer sites before tackling the dangerous ones
+        """), unsafe_allow_html=True)
         
-        st.markdown("""
-        **📚 Getting Started Guide:**
-        1. **🏘️ Visit the Town Hub first** - Meet the locals, buy better equipment, and learn the ropes
-        2. **💪 Build your strength** - Try axe throwing and other activities to improve your skills
-        3. **🤝 Make friends with factions** - They'll offer better deals and exclusive equipment
-        4. **🗺️ Study the Strata Map** - Plan your expeditions carefully - some sites are deadly!
-        5. **💰 Start small** - Begin with safer, closer sites before tackling the dangerous ones
-        """)
-        
-        st.warning("⚠️ **Survival Tip**: Don't rush into expeditions! Many greenhorn prospectors have lost everything (and their lives) by being too eager. The mines will wait - prepare yourself first!")
+        st.markdown(create_readable_text("""
+        <strong>⚠️ Survival Tip:</strong> Don't rush into expeditions! Many greenhorn prospectors have lost everything (and their lives) by being too eager. The mines will wait - prepare yourself first!
+        """), unsafe_allow_html=True)
     
     st.divider()
     

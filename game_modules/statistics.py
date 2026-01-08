@@ -1,7 +1,11 @@
 import streamlit as st
 from game_modules.firebase_service import get_firebase_service
+from game_modules.ui_styles import apply_global_styles, create_readable_text
 
 def render_statistics():
+    # Apply unified styles
+    apply_global_styles()
+    
     st.markdown("## 📊 Expedition Statistics & Leaderboard")
     st.caption("Your impact on the world below")
 
