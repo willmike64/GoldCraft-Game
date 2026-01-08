@@ -2187,4 +2187,4 @@ def apply_choice_consequences(expedition, choice):
     if 'events' not in expedition:
         expedition['events'] = []
     
-    expedition['events'].append(f"{choice['text']}: {choice['result']}")"
+    expedition['events'].append(f"{choice['text']}: {choice['result']}")
