@@ -1,0 +1,38 @@
+# Firebase credentials and secrets
+.streamlit/secrets.toml
+*.json
+firebase-adminsdk-*.json
+
+# Save files and user data
+saves/
+*.save
+user_data/
+
+# Environment variables
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
