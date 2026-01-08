@@ -1135,8 +1135,9 @@ def render_travel_phase(expedition):
                 'description': 'The sun shines bright and the trail is clear! Lady Luck is smiling on you today.',
                 'audience_reaction': 'The crowd cheers: "Lucky start! Lucky start!"',
                 'choices': [
-                    {'text': 'Race ahead with confidence', 'result': 'You arrive pumped up and ready!', 'morale': 15, 'gold': 2},
-                    {'text': 'Enjoy the scenery and stay alert', 'result': 'You spot a small gold nugget on the trail!', 'supplies': 10, 'gold': 5}
+                    {'text': 'Push hard for early arrival (+2 mining sessions)', 'result': 'You arrive with extra daylight for mining!', 'morale': 10, 'mining_bonus': 2, 'supplies': -5},
+                    {'text': 'Scout for gold along the trail', 'result': 'You spot valuable nuggets on the path!', 'supplies': 5, 'gold': 8, 'morale': 15},
+                    {'text': 'Rest and prepare your equipment', 'result': 'Your tools are perfectly calibrated!', 'equipment_bonus': 0.25, 'morale': 20}
                 ]
             },
             {
@@ -1144,19 +1145,49 @@ def render_travel_phase(expedition):
                 'description': 'A herd of wild horses thunders across your path! Their hooves kick up glittering dust - could it be gold?',
                 'audience_reaction': 'The audience gasps: "Danger AND opportunity!"',
                 'choices': [
-                    {'text': 'Chase the herd for gold dust', 'result': 'JACKPOT! You collect gold dust worth 10 oz!', 'gold': 10, 'morale': 20, 'supplies': -10},
-                    {'text': 'Wait safely for them to pass', 'result': 'Smart move! You avoid injury and stay focused.', 'morale': 5},
-                    {'text': 'Try to tame one for faster travel', 'result': 'Success! You now have a trusty steed!', 'supplies': 15, 'morale': 10}
+                    {'text': 'Chase the herd through dangerous terrain', 'result': 'JACKPOT! You collect premium gold dust!', 'gold': 15, 'morale': 25, 'supplies': -15, 'risk': 'High injury chance'},
+                    {'text': 'Set up collection nets in their path', 'result': 'Smart strategy! You safely gather gold dust!', 'gold': 10, 'supplies': -5, 'morale': 15},
+                    {'text': 'Tame a mustang for faster mining transport', 'result': 'Success! Your new steed speeds up operations!', 'supplies': 20, 'morale': 20, 'mining_speed': 1.5}
                 ]
             },
             {
                 'title': '🌪️ Sudden Thunderstorm',
-                'description': 'Lightning splits the sky! But wait - the rain is washing gold flakes down the mountainside!',
+                'description': 'Lightning splits the sky! The rain is washing gold flakes down the mountainside, but it\'s dangerous!',
                 'audience_reaction': 'The crowd is on the edge of their seats!',
                 'choices': [
-                    {'text': 'Dance in the golden rain', 'result': 'You collect 8 oz of gold but catch a cold!', 'gold': 8, 'supplies': -15, 'morale': 15},
-                    {'text': 'Take shelter and wait it out', 'result': 'You stay dry and discover a treasure map!', 'morale': 10, 'gold': 3},
-                    {'text': 'Use pans to collect the runoff', 'result': 'Brilliant! You gather 12 oz of storm gold!', 'gold': 12, 'supplies': -5}
+                    {'text': 'Risk lightning to collect storm gold', 'result': 'Incredible haul but your team is exhausted!', 'gold': 20, 'supplies': -20, 'morale': -10, 'risk': 'Lightning strike possible'},
+                    {'text': 'Take shelter and study the terrain', 'result': 'You discover a hidden vein location!', 'morale': 15, 'gold': 5, 'vein_discovery': True},
+                    {'text': 'Channel runoff into collection systems', 'result': 'Engineering triumph! Massive gold collection!', 'gold': 18, 'supplies': -8, 'morale': 25}
+                ]
+            },
+            {
+                'title': '🏴‍☠️ Bandit Scouts Spotted',
+                'description': 'Your lookout spots bandit scouts watching your expedition! They haven\'t attacked yet, but they\'re planning something.',
+                'audience_reaction': 'The audience holds its breath in suspense!',
+                'choices': [
+                    {'text': 'Launch surprise attack on their camp', 'result': 'Victory! You capture their stolen gold!', 'gold': 25, 'morale': 30, 'supplies': -25, 'risk': 'Combat casualties possible'},
+                    {'text': 'Negotiate and offer them a cut', 'result': 'Uneasy alliance formed - they protect you!', 'security': 50, 'gold': -5, 'morale': -5},
+                    {'text': 'Change route to avoid confrontation', 'result': 'Safe passage but longer journey!', 'supplies': -10, 'morale': 10, 'mining_time': -1}
+                ]
+            },
+            {
+                'title': '🦅 Golden Eagle Sighting',
+                'description': 'A majestic golden eagle circles overhead, clutching something shiny! Local legend says they collect gold for their nests.',
+                'audience_reaction': 'The crowd whispers: "Follow the eagle! Follow the eagle!"',
+                'choices': [
+                    {'text': 'Follow the eagle to its mountain nest', 'result': 'LEGENDARY! You find the eagle\'s treasure hoard!', 'gold': 35, 'morale': 40, 'supplies': -20, 'risk': 'Dangerous mountain climbing'},
+                    {'text': 'Use the eagle as a good luck omen', 'result': 'The eagle\'s blessing brings fortune!', 'luck_bonus': 0.3, 'morale': 25, 'gold': 8},
+                    {'text': 'Study the eagle\'s flight pattern', 'result': 'You learn the location of rich deposits!', 'gold': 12, 'mining_bonus': 1, 'morale': 20}
+                ]
+            },
+            {
+                'title': '🏔️ Avalanche Warning',
+                'description': 'The mountain is unstable! You hear distant rumbling. There\'s a rich exposed vein ahead, but the path is dangerous.',
+                'audience_reaction': 'The audience gasps: "Risk versus reward!"',
+                'choices': [
+                    {'text': 'Race to mine the exposed vein before avalanche', 'result': 'Incredible strike! You barely escape in time!', 'gold': 30, 'morale': 35, 'supplies': -15, 'risk': 'Avalanche burial possible'},
+                    {'text': 'Trigger controlled avalanche to expose more veins', 'result': 'Brilliant! The avalanche reveals a mother lode!', 'gold': 40, 'supplies': -10, 'morale': 45, 'risk': 'Requires explosives'},
+                    {'text': 'Take safe route around the mountain', 'result': 'Wisdom over greed - you find a safer deposit!', 'gold': 15, 'morale': 20, 'supplies': 5}
                 ]
             }
         ]
@@ -1290,12 +1321,27 @@ def render_mining_phase(expedition):
     
     if 'mining_sessions' not in expedition:
         expedition['mining_sessions'] = 0
-        expedition['max_sessions'] = 3
+        base_sessions = 3
+        # Apply bonuses from travel choices
+        extra_sessions = expedition.get('extra_mining_sessions', 0)
+        time_modifier = expedition.get('time_modifier', 0)
+        expedition['max_sessions'] = base_sessions + extra_sessions + time_modifier
+        
         if 'gems_collected' not in st.session_state:
             st.session_state.gems_collected = {'💎': 0, '💍': 0, '🔮': 0, '⭐': 0, '🌟': 0}
     
     current_session = expedition['mining_sessions']
     max_sessions = expedition['max_sessions']
+    
+    # Show bonuses from travel choices
+    if expedition.get('extra_mining_sessions', 0) > 0:
+        st.success(f"⚙️ **TRAVEL BONUS:** +{expedition['extra_mining_sessions']} extra mining sessions from your smart choices!")
+    if expedition.get('equipment_multiplier', 1.0) > 1.0:
+        st.success(f"🔧 **EQUIPMENT BONUS:** {(expedition['equipment_multiplier']-1)*100:.0f}% mining efficiency boost!")
+    if expedition.get('speed_multiplier', 1.0) > 1.0:
+        st.success(f"🐎 **SPEED BONUS:** {expedition['speed_multiplier']}x faster mining operations!")
+    if expedition.get('discovered_vein'):
+        st.success("🔍 **SECRET VEIN:** You have access to a hidden high-yield deposit!")
     
     st.markdown(f"### 🎯 **ROUND {current_session + 1} OF {max_sessions}**")
     
@@ -1449,9 +1495,24 @@ def render_slot_machine_game(expedition, game_config):
         # Final result
         final_result = [random.choice(weighted_symbols) for _ in range(3)]
         
-        # Calculate base rewards
+        # Calculate base rewards with bonuses from travel choices
         base_values = {'💰': 5, '💎': 15, '💍': 25, '🔮': 35, '⭐': 50, '🌟': 100, '🪨': 1, '⚫': 0}
         base_value = sum(base_values.get(symbol, 0) for symbol in final_result)
+        
+        # Apply equipment bonus from travel choices
+        equipment_multiplier = expedition.get('equipment_multiplier', 1.0)
+        base_value *= equipment_multiplier
+        
+        # Apply luck bonus from travel choices
+        luck_multiplier = expedition.get('luck_multiplier', 1.0)
+        if luck_multiplier > 1.0 and random.random() < 0.3:  # 30% chance for luck to trigger
+            base_value *= luck_multiplier
+            st.success(f"🍀 **LUCK ACTIVATED!** {(luck_multiplier-1)*100:.0f}% bonus from your eagle blessing!")
+        
+        # Secret vein bonus
+        if expedition.get('discovered_vein') and random.random() < 0.4:  # 40% chance
+            base_value *= 1.5
+            st.success("🔍 **SECRET VEIN STRIKE!** 50% bonus from your discovered location!")
         
         # Apply supply and morale modifiers
         supply_modifier = 1.3 if supplies > 80 else 1.15 if supplies > 60 else 0.7 if supplies < 30 else 0.85 if supplies < 50 else 1.0
@@ -1929,8 +1990,8 @@ def render_events_phase(expedition):
         # Create detailed choice display with hover tooltips
         for i, (choice_text, tooltip) in enumerate(choice_options):
             st.markdown(f"""
-            <div class="tooltip" style="margin: 15px 0; padding: 10px; background: rgba(218,165,32,0.1); border-radius: 8px; border-left: 4px solid #DAA520;">
-                <span style="cursor: help; color: #DAA520; font-weight: bold; font-size: 18px;">
+            <div class="tooltip" style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, rgba(218,165,32,0.15), rgba(255,215,0,0.1)); border-radius: 10px; border-left: 5px solid #DAA520; box-shadow: 0 2px 8px rgba(218,165,32,0.3);">
+                <span style="cursor: help; color: #8B4513; font-weight: bold; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
                     {choice_text} 💡
                 </span>
                 <span class="tooltiptext">{tooltip}</span>
@@ -2029,7 +2090,7 @@ def render_expedition_results(expedition):
         st.metric("Final Morale", f"{expedition['team_morale']}%")
 
 def apply_choice_consequences(expedition, choice):
-    """Apply the consequences of player choices with supply/morale impact."""
+    """Apply the consequences of player choices with supply/morale impact and new mechanics."""
     if 'gold' in choice:
         base_gold = choice['gold']
         
@@ -2067,6 +2128,55 @@ def apply_choice_consequences(expedition, choice):
             elif total_modifier < 0.9:
                 st.warning(f"⚠️ **TEAM STRUGGLES:** Low supplies ({expedition['supplies_remaining']}%) and poor morale ({expedition['team_morale']}%) reduced your gold find by {(1-total_modifier)*100:.0f}%. ({base_gold:.1f} → {final_gold:.1f} oz)")
     
+    # Apply new mechanics
+    if 'mining_bonus' in choice:
+        if 'extra_mining_sessions' not in expedition:
+            expedition['extra_mining_sessions'] = 0
+        expedition['extra_mining_sessions'] += choice['mining_bonus']
+        st.info(f"⚙️ **MINING BOOST:** +{choice['mining_bonus']} extra mining sessions!")
+    
+    if 'equipment_bonus' in choice:
+        if 'equipment_multiplier' not in expedition:
+            expedition['equipment_multiplier'] = 1.0
+        expedition['equipment_multiplier'] += choice['equipment_bonus']
+        st.info(f"🔧 **EQUIPMENT ENHANCED:** +{choice['equipment_bonus']*100:.0f}% mining efficiency!")
+    
+    if 'mining_speed' in choice:
+        if 'speed_multiplier' not in expedition:
+            expedition['speed_multiplier'] = 1.0
+        expedition['speed_multiplier'] = choice['mining_speed']
+        st.info(f"🐎 **TRANSPORT UPGRADE:** {choice['mining_speed']}x mining speed!")
+    
+    if 'security' in choice:
+        if 'security_bonus' not in expedition:
+            expedition['security_bonus'] = 0
+        expedition['security_bonus'] += choice['security']
+        st.info(f"🛡️ **SECURITY ENHANCED:** +{choice['security']} protection against bandits!")
+    
+    if 'luck_bonus' in choice:
+        if 'luck_multiplier' not in expedition:
+            expedition['luck_multiplier'] = 1.0
+        expedition['luck_multiplier'] += choice['luck_bonus']
+        st.info(f"🍀 **LUCK BLESSED:** +{choice['luck_bonus']*100:.0f}% chance for rare finds!")
+    
+    if 'vein_discovery' in choice:
+        expedition['discovered_vein'] = True
+        st.success("🔍 **VEIN DISCOVERED:** You've found a secret mining location!")
+    
+    if 'mining_time' in choice:
+        if 'time_modifier' not in expedition:
+            expedition['time_modifier'] = 0
+        expedition['time_modifier'] += choice['mining_time']
+        if choice['mining_time'] < 0:
+            st.warning(f"⏱️ **TIME LOST:** {abs(choice['mining_time'])} fewer mining sessions due to delays.")
+        else:
+            st.info(f"⏱️ **TIME GAINED:** +{choice['mining_time']} extra mining sessions!")
+    
+    # Handle risk warnings
+    if 'risk' in choice:
+        st.warning(f"⚠️ **RISK TAKEN:** {choice['risk']}")
+    
+    # Standard morale and supplies
     if 'morale' in choice:
         expedition['team_morale'] = max(0, min(100, expedition['team_morale'] + choice['morale']))
     
@@ -2077,4 +2187,4 @@ def apply_choice_consequences(expedition, choice):
     if 'events' not in expedition:
         expedition['events'] = []
     
-    expedition['events'].append(f"{choice['text']}: {choice['result']}")
+    expedition['events'].append(f"{choice['text']}: {choice['result']}")"
