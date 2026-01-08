@@ -15,13 +15,8 @@ class FirebaseService:
         try:
             # Check if Firebase is already initialized
             if not firebase_admin._apps:
-                # Try to use the JSON file path first
-                if "FIREBASE_SERVICE_ACCOUNT_PATH" in st.secrets:
-                    json_path = st.secrets["FIREBASE_SERVICE_ACCOUNT_PATH"]
-                    cred = credentials.Certificate(json_path)
-                    firebase_admin.initialize_app(cred)
-                # Fallback to individual config fields
-                elif all(key in st.secrets for key in ["FIREBASE_PROJECT_ID", "FIREBASE_PRIVATE_KEY", "FIREBASE_CLIENT_EMAIL"]):
+                # Use individual config fields from secrets.toml
+                if all(key in st.secrets for key in ["FIREBASE_PROJECT_ID", "FIREBASE_PRIVATE_KEY", "FIREBASE_CLIENT_EMAIL"]):
                     firebase_config = {
                         "type": "service_account",
                         "project_id": st.secrets["FIREBASE_PROJECT_ID"],
