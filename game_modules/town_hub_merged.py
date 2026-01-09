@@ -148,9 +148,9 @@ def render_town_hub():
             st.session_state["town_hub_nav"] = "🤝 Factions"
 
     with col3:
-        st.markdown(create_town_card("🏦 Bank", "Secure reserves, track inventory value, plan ahead."), unsafe_allow_html=True)
-        if st.button("💰 Enter Bank", use_container_width=True):
-            st.session_state["town_hub_nav"] = "🏦 Bank"
+        st.markdown(create_town_card("📜 Quest Board", "Faction missions and special assignments."), unsafe_allow_html=True)
+        if st.button("📋 View Quests", use_container_width=True):
+            st.session_state["town_hub_nav"] = "📜 Quests"
 
     # Auto-save when making purchases (keeps existing behavior)
     if st.session_state.get('user_email'):
@@ -161,7 +161,7 @@ def render_town_hub():
     # Section navigation (lets the quick buttons above actually switch views)
     nav = st.radio(
         label="",
-        options=["🤝 Factions", "🔧 Equipment", "📦 Supplies", "🏦 Bank", "📊 Inventory"],
+        options=["🤝 Factions", "🔧 Equipment", "📦 Supplies", "📜 Quests", "🏦 Bank", "📊 Inventory"],
         horizontal=True,
         key="town_hub_nav",
     )
@@ -172,6 +172,9 @@ def render_town_hub():
         render_equipment_shop()
     elif nav == "📦 Supplies":
         render_supplies_shop()
+    elif nav == "📜 Quests":
+        from .quest_system import render_quest_panel
+        render_quest_panel()
     elif nav == "🏦 Bank":
         from .bank import render_bank
         render_bank()

@@ -67,6 +67,7 @@ class CharacterManager:
                 'race': race,
                 'level': 1,
                 'xp': 0,
+                'quest_progress': {'completed': []},
                 'gold': 50,
                 'turn': 1,
                 'created_at': datetime.datetime.now(),
@@ -78,7 +79,10 @@ class CharacterManager:
                 'faction_negotiations': {},
                 'current_view': 'menu',
                 'current_strata': 'Surface',
-                'depth_layer': 'Surface'
+                'depth_layer': 'Surface',
+                'total_earned': 0,
+                'night_expeditions': 0,
+                'rare_finds': 0
             }
             
             # Set faction benefits based on faction
@@ -413,6 +417,7 @@ def render_character_creation():
                         'race': race,
                         'level': 1,
                         'xp': 0,
+                        'quest_progress': {'completed': []},
                         'gold': 50,
                         'turn': 1,
                         'equipment': {"Basic Pickaxe": True, "Canvas Satchel": True, "Work Clothes": True},
@@ -422,7 +427,10 @@ def render_character_creation():
                         'faction_negotiations': {},
                         'current_view': 'menu',
                         'current_strata': 'Surface',
-                        'depth_layer': 'Surface'
+                        'depth_layer': 'Surface',
+                        'total_earned': 0,
+                        'night_expeditions': 0,
+                        'rare_finds': 0
                     }
                 
                 # Set faction benefits
@@ -493,9 +501,10 @@ def render_character_creation():
 def load_character_into_session(character: Dict, email: str):
     """Load character data into session state"""
     # Clear existing game state
-    game_keys = ['current_view', 'current_strata', 'depth_layer', 'gold', 'reputation', 
+    game_keys = ['current_view', 'current_strata', 'depth_layer', 'gold', 'reputation',
                  'visited_sites', 'turn', 'equipment', 'supplies', 'faction_negotiations',
-                 'level', 'xp', 'selected_faction', 'faction_benefits']
+                 'level', 'xp', 'quest_progress', 'selected_faction', 'faction_benefits',
+                 'total_earned', 'night_expeditions', 'rare_finds']
     
     for key in game_keys:
         if key in st.session_state:
@@ -508,6 +517,10 @@ def load_character_into_session(character: Dict, email: str):
     st.session_state.gold = character.get('gold', 50)
     st.session_state.level = character.get('level', 1)
     st.session_state.xp = character.get('xp', 0)
+    st.session_state.quest_progress = character.get('quest_progress', {'completed': []})
+    st.session_state.total_earned = character.get('total_earned', 0)
+    st.session_state.night_expeditions = character.get('night_expeditions', 0)
+    st.session_state.rare_finds = character.get('rare_finds', 0)
     st.session_state.turn = character.get('turn', 1)
     st.session_state.equipment = character.get('equipment', {})
     st.session_state.supplies = character.get('supplies', {})
@@ -537,6 +550,10 @@ def save_current_character():
             'race': st.session_state.get('faction_benefits', {}).get('race', 'Unknown'),
             'level': st.session_state.get('level', 1),
             'xp': st.session_state.get('xp', 0),
+            'quest_progress': st.session_state.get('quest_progress', {'completed': []}),
+            'total_earned': st.session_state.get('total_earned', 0),
+            'night_expeditions': st.session_state.get('night_expeditions', 0),
+            'rare_finds': st.session_state.get('rare_finds', 0),
             'gold': st.session_state.get('gold', 50),
             'turn': st.session_state.get('turn', 1),
             'equipment': st.session_state.get('equipment', {}),
