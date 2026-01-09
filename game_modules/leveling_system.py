@@ -124,5 +124,6 @@ def get_xp_rewards():
         'mini_game_win': 25,
         'purchase_made': 5,
         'investment_made': 20,
-        'turn_complete': 10
+        'turn_complete': 10,
+        'quest_complete': 40
     }
