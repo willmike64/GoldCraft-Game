@@ -3,6 +3,8 @@ import datetime
 from typing import Dict, List
 from .character_manager import CharacterManager
 from .firebase_service import get_firebase_service
+from .leveling_system import get_level_from_xp
+from .quest_line import get_next_quest
 
 def validate_character_name(name: str) -> tuple[bool, str]:
     """Validate character name and return (is_valid, error_message)"""
@@ -326,6 +328,38 @@ def render_character_card(character: Dict, char_manager, email: str):
                 st.session_state[f"confirm_delete_{name}"] = True
                 st.warning("⚠️ Click DELETE again to confirm!")
 
+    quest_progress = character.get('quest_progress', {'completed': []})
+    completed_quests = set(quest_progress.get('completed', []))
+    next_quest = get_next_quest(completed_quests)
+
+    with st.expander("📜 Initiate Questline (Levels 1-20)", expanded=False):
+        if not next_quest:
+            st.success("🏆 Questline complete! Your early legend is written.")
+        else:
+            st.markdown(f"**{next_quest['title']}**")
+            st.markdown(f"*Level {next_quest['level_required']} • Reward: {next_quest['xp_reward']} XP*")
+            st.markdown(next_quest['description'])
+
+            if level >= next_quest['level_required']:
+                if st.button(
+                    f"✅ Claim Quest XP ({next_quest['xp_reward']} XP)",
+                    key=f"quest_claim_{name}_{next_quest['id']}",
+                ):
+                    updated_character = dict(character)
+                    updated_character['quest_progress'] = {
+                        'completed': sorted(completed_quests | {next_quest['id']})
+                    }
+                    updated_character['xp'] = updated_character.get('xp', 0) + next_quest['xp_reward']
+                    updated_character['level'] = get_level_from_xp(updated_character['xp'])
+
+                    if char_manager.save_character(email, name, updated_character):
+                        st.success("✨ Quest completed! XP awarded.")
+                        st.rerun()
+                    else:
+                        st.error("❌ Failed to save quest progress.")
+            else:
+                st.info(f"Reach Level {next_quest['level_required']} to unlock this quest.")
+
 def render_empty_character_slot(slot_number: int):
     """Render empty character slot with creation option"""
     
@@ -345,9 +379,9 @@ def render_empty_character_slot(slot_number: int):
 def load_character_into_session(character: Dict, email: str):
     """Load character data into session state and join multiplayer server"""
     # Clear existing game state
-    game_keys = ['current_view', 'current_strata', 'depth_layer', 'gold', 'reputation', 
+    game_keys = ['current_view', 'current_strata', 'depth_layer', 'gold', 'reputation',
                  'visited_sites', 'turn', 'equipment', 'supplies', 'faction_negotiations',
-                 'level', 'xp', 'selected_faction', 'faction_benefits']
+                 'level', 'xp', 'quest_progress', 'selected_faction', 'faction_benefits']
     
     for key in game_keys:
         if key in st.session_state:
@@ -360,6 +394,7 @@ def load_character_into_session(character: Dict, email: str):
     st.session_state.gold = character.get('gold', 50)
     st.session_state.level = character.get('level', 1)
     st.session_state.xp = character.get('xp', 0)
+    st.session_state.quest_progress = character.get('quest_progress', {'completed': []})
     st.session_state.turn = character.get('turn', 1)
     st.session_state.equipment = character.get('equipment', {})
     st.session_state.supplies = character.get('supplies', {})

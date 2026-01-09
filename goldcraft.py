@@ -389,6 +389,7 @@ def init_session_state():
             "faction_negotiations": {},
             "level": 1,
             "xp": 0,
+            "quest_progress": {"completed": []},
             "selected_faction": None,
             "faction_benefits": {},
             "game_loaded": True
